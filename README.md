@@ -1,1 +1,1 @@
-# skku_swe300242_team1
+# SKKU Social Hub
