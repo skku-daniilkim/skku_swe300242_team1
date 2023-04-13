@@ -17,6 +17,7 @@ import java.util.Set;
 @SupportedAnnotationTypes("com.skkuse.team1.socialhub.routes.annotations.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 @AutoService(Processor.class)
+@SuppressWarnings("unused")  /* HACK */
 public class APIRouterProcessor extends AbstractProcessor {
 
     private record APIRouterEntry(String className, String baseURL, List<APIRouteEntry> routes){
