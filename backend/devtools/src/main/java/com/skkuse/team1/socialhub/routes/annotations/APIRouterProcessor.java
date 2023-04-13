@@ -110,7 +110,7 @@ public class APIRouterProcessor extends AbstractProcessor {
 //                        """.formatted(route.getKey() == Route.RouteType.PUBLIC ? "public" : "protected", entry.baseURL, entry.className, route.getValue())
 //                    );
                     composed.append("""
-                                        %s.%s(vertx%s).compose(router -> mountRouter(mainRouter, "%s%s/%s*", router)),                        
+                                        %s.%s(vertx%s).compose(router -> mountRouter(mainRouter, "%s%s/%s*", router)),
                             """.formatted(entry.className, route.methodName, route.provideAuth ? ", authProvider" : "", route.type, "v"+route.version, entry.baseURL));
                 }
             }
