@@ -84,8 +84,9 @@ public class APIRouterProcessor extends AbstractProcessor {
                     import io.vertx.core.CompositeFuture;
                     import io.vertx.ext.web.Router;
                     import io.vertx.ext.auth.jwt.JWTAuth;
-                    
+                                        
                     import java.lang.Void;
+                    import java.util.Arrays;
                          
                     public class %s {
                     """
@@ -98,7 +99,7 @@ public class APIRouterProcessor extends AbstractProcessor {
                             return Future.succeededFuture();
                         }
                         public static Future<Void> registerAllRoutes(Vertx vertx, Router mainRouter, JWTAuth authProvider) {
-                            return CompositeFuture.all(
+                            return CompositeFuture.all( Arrays.asList(
                     """
             );
 
@@ -117,7 +118,7 @@ public class APIRouterProcessor extends AbstractProcessor {
             composed.deleteCharAt(composed.lastIndexOf(","));
             writer.print(composed);
             writer.print("""
-                            ).compose(temp -> Future.<Void>succeededFuture());
+                            ) ).compose(temp -> Future.<Void>succeededFuture());
                         }
                     }
                     """);
