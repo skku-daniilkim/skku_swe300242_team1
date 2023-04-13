@@ -8,7 +8,7 @@ java {
 }
 
 group = 'com.skkuse.team1.socialhub'
-version = '1.0-SNAPSHOT'
+version = '0.1.0-alpha'
 
 repositories {
     mavenCentral()
