@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+group = 'com.skkuse.team1.socialhub'
+version = '0.1.0-alpha'
+
+repositories {
+    mavenCentral()
+}
+
+def vertxVersion = "4.4.1"
+
+dependencies {
+    implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
+
+    implementation("io.vertx:vertx-core")
+    implementation("io.vertx:vertx-config")
+    implementation("io.vertx:vertx-web-client")
+    implementation("io.vertx:vertx-auth-jwt")
+    implementation("io.vertx:vertx-web")
+    implementation("io.vertx:vertx-web-openapi")
+    implementation("io.vertx:vertx-pg-client")
+
+    testImplementation("io.vertx:vertx-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+
+    implementation(project(":devtools"))
+    annotationProcessor(project(":devtools"))
+}
+
+test {
+    useJUnitPlatform()
+}
