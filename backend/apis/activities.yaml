@@ -1,0 +1,158 @@
+openapi: "3.0.2"
+info:
+  title: Activities
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/api/protected/v1/activities
+tags:
+  - name: authorized
+    description: Authorized users
+  - name: owner
+    description: Only user with `id == activity.idUserCreate` can use this endpoints.
+paths:
+  /:
+    post:
+      operationId: commit
+      summary: commit
+      tags:
+        - authorized
+      description: | 
+        Create new activity
+      requestBody:
+        $ref: '#/components/requestBodies/requestActivityCommit'
+      responses:
+        200:
+          $ref: '#/components/responses/activityList'
+    get:
+      operationId: get
+      summary: get
+      tags:
+        - authorized
+      responses:
+        200:
+          $ref: '#/components/responses/activityList'
+  /{id}:
+    put:
+      operationId: update
+      summary: update
+      tags:
+        - owner
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        $ref: '#/components/requestBodies/requestActivityCommit'
+      responses:
+        200:
+          description: Activity is updated successfully.
+    delete:
+      operationId: delete
+      summary: delete
+      tags:
+        - owner
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: Activity is deleted successfully.
+components:
+  parameters:
+    id:
+      in: path
+      required: true
+      name: id
+      description: Identifier of the activity
+      schema:
+        type: integer
+        minimum: 1
+        format: int64
+  schemas:
+    Activity:
+      properties:
+        id:
+          type: integer
+          format: int64
+        idUserCreate:
+          type: integer
+          format: int64
+        participantCount:
+          type: integer
+          format: int32
+        title:
+          type: string
+          minLength: 3
+        location:
+          type: string
+          minLength: 3
+        description:
+          type: string
+          minLength: 3
+        idParticipantList:
+          type: array
+          items:
+            type: integer
+            format: int64
+        dateTime:
+          $ref: '#/components/schemas/LocalDateTime'
+    LocalDateTime:
+      type: object
+      required:
+        - day
+        - month
+        - year
+        - hour
+        - minute
+      properties:
+        day:
+          type: integer
+          minimum: 1
+          maximum: 31
+        month:
+          type: integer
+          minimum: 1
+          maximum: 12
+        year:
+          type: integer
+          minimum: 1960
+        hour:
+          type: integer
+          minimum: 0
+          maximum: 24
+        minute:
+          type: integer
+          minimum: 0
+          maximum: 60
+  requestBodies:
+    requestActivityCommit:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - title
+              - description
+              - location
+              - dateTime
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              location:
+                type: string
+              dateTime:
+                $ref: '#/components/schemas/LocalDateTime'
+              idParticipantList:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+  responses:
+    activityList:
+      description: List of activities
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Activity'
+
