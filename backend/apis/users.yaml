@@ -1,0 +1,111 @@
+openapi: "3.0.0"
+info:
+  title: Users
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/api/v1/users
+tags:
+  - name: protected
+    description: Only authorized users can use this endpoint
+paths:
+  /me:
+    get:
+      operationId: get
+      summary: get
+      description: Returns information about current user
+      tags:
+        - protected
+      responses:
+        200:
+          description: Information about requester user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /login:
+    post:
+      operationId: login
+      summary: login
+      requestBody:
+        $ref: '#/components/requestBodies/login'
+      responses:
+        200:
+          description: User successfully logged in.
+        401:
+          description: Wrong login or password.
+  /logout:
+    get:
+      operationId: logout
+      summary: logout
+      tags:
+        - protected
+      responses:
+        200:
+          description: User successfully logged out.
+  /change-password:
+    post:
+      operationId: changePassword
+      summary: changePassword
+      tags:
+        - protected
+      requestBody:
+        $ref: '#/components/requestBodies/changePassword'
+      responses:
+        200:
+          description: Password is changed successfully.
+        400:
+          description: Wrong old password.
+        401:
+          description: Access denied.
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - username
+        - password
+        - idSecurityQuestion
+        - securityAnswer
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          minimum: 1
+        username:
+          type: string
+        password:
+          type: string
+        idSecurityQuestion:
+          type: integer
+        securityAnswer:
+          type: string
+  requestBodies:
+    changePassword:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - password
+              - oldPassword
+            properties:
+              password:
+                type: string
+                minLength: 3
+              oldPassword:
+                type: string
+                minLength: 3
+    login:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - login
+              - password
+            properties:
+              login:
+                type: string
+              password:
+                type: string
